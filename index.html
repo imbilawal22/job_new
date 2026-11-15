@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PakJobs Hub - Pakistan All Provinces Job News & Alerts</title>
+  <meta name="description" content="Clean and minimalist portal for government and private job news across all provinces of Pakistan (Punjab, Sindh, KPK, Balochistan, Islamabad, AJK, GB).">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-wrapper">
+      <a href="index.html" class="brand-logo" aria-label="Rozgar Pakistan Home">
+        <div class="brand-icon">
+          <!-- Pak Star & Crescent / Minimal Icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>PakJobs<span style="color: var(--color-accent);">.pk</span></h1>
+          <p>Rozgar News & Job Alerts</p>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#feed" class="nav-link active">Home</a>
+        <a href="#provinces" class="nav-link">All Provinces</a>
+        <a href="#departments" class="nav-link">Departments</a>
+        <a href="#subscribe" class="nav-link">Job Alerts</a>
+      </nav>
+
+      <div class="header-cta">
+        <button class="btn-alert" id="btnHeaderAlert" title="Get WhatsApp or Email alerts">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+          </svg>
+          Get Job Alerts
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-pill">
+        <span class="pulse-dot"></span>
+        Pakistan Job News Network
+      </div>
+      <h2 class="hero-title">
+        Pakistan ke Tamam Subon ki <span>Job News</span>
+      </h2>
+      <p class="hero-subtitle">
+        Punjab, Sindh, KPK, Balochistan, aur Federal departments ki latest job updates aur rozgar notifications ek hi jagah.
+      </p>
+
+      <!-- Minimalist Search Form -->
+      <div class="search-wrapper">
+        <form id="searchForm" class="search-box" onsubmit="event.preventDefault(); handleSearch();">
+          <span class="search-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+          </span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search by job title, department, or qualification..." autocomplete="off">
+          <button type="submit" class="search-btn">Search</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Province Filter Section -->
+  <section class="province-filter-section" id="provinces">
+    <div class="container">
+      <div class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+        </svg>
+        Filter By Province / Suba
+      </div>
+      <div class="province-pills" id="provincePills">
+        <button class="province-btn active" data-province="all">
+          All Pakistan <span class="count-badge">0</span>
+        </button>
+        <button class="province-btn" data-province="punjab">
+          Punjab <span class="count-badge">0</span>
+        </button>
+        <button class="province-btn" data-province="sindh">
+          Sindh <span class="count-badge">0</span>
+        </button>
+        <button class="province-btn" data-province="kpk">
+          Khyber Pakhtunkhwa (KPK) <span class="count-badge">0</span>
+        </button>
+        <button class="province-btn" data-province="balochistan">
+          Balochistan <span class="count-badge">0</span>
+        </button>
+        <button class="province-btn" data-province="islamabad">
+          Islamabad (Federal) <span class="count-badge">0</span>
+        </button>
+        <button class="province-btn" data-province="ajk">
+          AJK <span class="count-badge">0</span>
+        </button>
+        <button class="province-btn" data-province="gb">
+          Gilgit-Baltistan <span class="count-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Jobs Feed Area -->
+  <main class="main-content" id="feed">
+    <div class="container">
+      
+      <!-- Feed Header -->
+      <div class="feed-header">
+        <h3 class="feed-title" id="feedSectionTitle">Latest Job Announcements</h3>
+        <div class="active-filter-indicator">
+          Region: <strong id="currentFilterText">All Pakistan</strong>
+        </div>
+      </div>
+
+      <!-- Container where job cards will render (Filhal empty state shown) -->
+      <div id="jobsListContainer">
+        
+        <!-- Clean Minimalist Empty State Card -->
+        <div class="empty-state-card">
+          <div class="empty-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          
+          <h3 class="empty-title">Filhal Koi Naya Job Alert Mojood Nahi Hai</h3>
+          <p class="empty-desc">
+            Pakistan ke kisi bhi soobay ya federal department ki taraf se jese hi nayi jobs ya news aayengi, woh yahan foran update kardi jayengi.
+          </p>
+
+          <!-- Province Tags indicator -->
+          <div class="empty-provinces-taglist">
+            <span class="province-tag">Punjab</span>
+            <span class="province-tag">Sindh</span>
+            <span class="province-tag">KPK</span>
+            <span class="province-tag">Balochistan</span>
+            <span class="province-tag">Islamabad</span>
+            <span class="province-tag">AJK</span>
+            <span class="province-tag">Gilgit-Baltistan</span>
+          </div>
+
+          <!-- Alert Subscription Box -->
+          <div class="alert-subscribe-box" id="subscribe">
+            <h4>Nayi Job Aate Hi Khabar Paayen</h4>
+            <p>Apna Email darj karen taake nayi job aate hi aapko alert mil sake.</p>
+            <form id="subscribeForm" onsubmit="event.preventDefault(); handleSubscribe();" class="sub-input-group">
+              <input type="email" id="subscriberEmail" class="sub-input" placeholder="Apna email address likhein..." required>
+              <button type="submit" class="btn-sub">Alert Me</button>
+            </form>
+          </div>
+
+        </div>
+        <!-- End Empty State Card -->
+
+      </div>
+
+      <!-- Overview of Provinces Grid -->
+      <div class="provinces-overview">
+        <h4 class="overview-heading">Provincial Job Portals Coverage</h4>
+        <div class="provinces-grid">
+          
+          <div class="province-card" onclick="filterByProvince('punjab')">
+            <div>
+              <div class="p-card-top">
+                <span class="p-name">Punjab</span>
+                <span class="p-status">0 Jobs</span>
+              </div>
+              <p class="p-card-meta">PPSC, School Education, Police, Health & Government Departments</p>
+            </div>
+            <span class="p-card-link">View Updates &rarr;</span>
+          </div>
+
+          <div class="province-card" onclick="filterByProvince('sindh')">
+            <div>
+              <div class="p-card-top">
+                <span class="p-name">Sindh</span>
+                <span class="p-status">0 Jobs</span>
+              </div>
+              <p class="p-card-meta">SPSC, Karachi Municipal, School Education, Sindh Police</p>
+            </div>
+            <span class="p-card-link">View Updates &rarr;</span>
+          </div>
+
+          <div class="province-card" onclick="filterByProvince('kpk')">
+            <div>
+              <div class="p-card-top">
+                <span class="p-name">KPK</span>
+                <span class="p-status">0 Jobs</span>
+              </div>
+              <p class="p-card-meta">KPPSC, Elementary & Secondary Education, KPK Police</p>
+            </div>
+            <span class="p-card-link">View Updates &rarr;</span>
+          </div>
+
+          <div class="province-card" onclick="filterByProvince('balochistan')">
+            <div>
+              <div class="p-card-top">
+                <span class="p-name">Balochistan</span>
+                <span class="p-status">0 Jobs</span>
+              </div>
+              <p class="p-card-meta">BPSC, Balochistan Education, Levies Force, Health Dept</p>
+            </div>
+            <span class="p-card-link">View Updates &rarr;</span>
+          </div>
+
+          <div class="province-card" onclick="filterByProvince('islamabad')">
+            <div>
+              <div class="p-card-top">
+                <span class="p-name">Federal / Islamabad</span>
+                <span class="p-status">0 Jobs</span>
+              </div>
+              <p class="p-card-meta">FPSC, Ministries, FIA, NADRA, FBR, Railway & Armed Forces</p>
+            </div>
+            <span class="p-card-link">View Updates &rarr;</span>
+          </div>
+
+          <div class="province-card" onclick="filterByProvince('ajk')">
+            <div>
+              <div class="p-card-top">
+                <span class="p-name">Azad Kashmir (AJK)</span>
+                <span class="p-status">0 Jobs</span>
+              </div>
+              <p class="p-card-meta">AJKPSC, Forest Dept, Education, AJK Police, Health</p>
+            </div>
+            <span class="p-card-link">View Updates &rarr;</span>
+          </div>
+
+          <div class="province-card" onclick="filterByProvince('gb')">
+            <div>
+              <div class="p-card-top">
+                <span class="p-name">Gilgit-Baltistan</span>
+                <span class="p-status">0 Jobs</span>
+              </div>
+              <p class="p-card-meta">GB Police, Education Department, Tourism, Forestry</p>
+            </div>
+            <span class="p-card-link">View Updates &rarr;</span>
+          </div>
+
+          <div class="province-card" onclick="filterByProvince('all')">
+            <div>
+              <div class="p-card-top">
+                <span class="p-name">All Pakistan Jobs</span>
+                <span class="p-status">0 Jobs</span>
+              </div>
+              <p class="p-card-meta">National Testing Services (NTS, OTS, PTS) & Private Companies</p>
+            </div>
+            <span class="p-card-link">View Updates &rarr;</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Categories / Departments -->
+      <div class="dept-chips-section" id="departments">
+        <h4 class="dept-title">Upcoming Job Categories & Testing Agencies</h4>
+        <div class="dept-chips-list">
+          <span class="dept-chip">FPSC Jobs</span>
+          <span class="dept-chip">PPSC Jobs</span>
+          <span class="dept-chip">SPSC Jobs</span>
+          <span class="dept-chip">KPPSC Jobs</span>
+          <span class="dept-chip">BPSC Jobs</span>
+          <span class="dept-chip">Education & Teaching</span>
+          <span class="dept-chip">Police & Law Enforcement</span>
+          <span class="dept-chip">Healthcare & Medical</span>
+          <span class="dept-chip">Banking & Finance</span>
+          <span class="dept-chip">NADRA & FBR</span>
+          <span class="dept-chip">Pakistan Armed Forces</span>
+          <span class="dept-chip">Railway & Aviation</span>
+          <span class="dept-chip">IT & Software</span>
+          <span class="dept-chip">NTS & OTS Tests</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-info">
+          <h3>PakJobs.pk</h3>
+          <p>
+            Pakistan ka cleanest rozgar portal jahan tamam soobon (Punjab, Sindh, KPK, Balochistan, Federal) ki verified job news share ki jati hain.
+          </p>
+        </div>
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h4>Provinces</h4>
+            <ul>
+              <li><a href="javascript:void(0)" onclick="filterByProvince('punjab')">Punjab Jobs</a></li>
+              <li><a href="javascript:void(0)" onclick="filterByProvince('sindh')">Sindh Jobs</a></li>
+              <li><a href="javascript:void(0)" onclick="filterByProvince('kpk')">KPK Jobs</a></li>
+              <li><a href="javascript:void(0)" onclick="filterByProvince('balochistan')">Balochistan Jobs</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Federal & Special</h4>
+            <ul>
+              <li><a href="javascript:void(0)" onclick="filterByProvince('islamabad')">Federal Jobs</a></li>
+              <li><a href="javascript:void(0)" onclick="filterByProvince('ajk')">AJK Jobs</a></li>
+              <li><a href="javascript:void(0)" onclick="filterByProvince('gb')">Gilgit Baltistan</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Quick Info</h4>
+            <ul>
+              <li><a href="#subscribe">Subscribe Alerts</a></li>
+              <li><a href="#departments">Categories</a></li>
+              <li><a href="javascript:void(0)">Privacy Policy</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 PakJobs.pk. All rights reserved.</div>
+        <div>Clean & Minimalist Job Portal for Pakistan</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Message -->
+  <div class="toast-msg" id="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    <span id="toastText">Action successful</span>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="js/app.js"></script>
+</body>
+</html>
